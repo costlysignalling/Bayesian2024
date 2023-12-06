@@ -1,0 +1,35 @@
+plat height good lognormal example
+
+dřív než link funkce řešit bayesovu rovnici
+
+přidat příklad se dvěma hypotázama only
+
+1. den
+uvod do pravděpodobnostních rozdělení, diskrétní - skončit poisson (Honza)
+začít exponential, gamma, normal, additive processes, spojitý - exponential family + něco jako regrese (Petr) 
+cvika na generování dat 1
+lognormal a normal co to je atp (Honza)
+link funkce (Petr)
+cvika na generování dat 2 (v každém úkolu je link fce)
+
+2. den
+Bayesova věta a věrohodnost (Honza)
+praktická cvika a stupidest sampler ever (Petr)
+bestiář jiných samplerů, klasický monte carlo, HMC (ulam, stan) (Honza)
+jednoduchý příklady na totéž, ekvivalent t testu a regrese, trochu už diagnostiky konvergence (oba - spíš na základě cvik)
+
+3. den
+složitější modely, stavebnice ale jsou věcí který nejdou, diskétní parametrickej prostor, jak to obejít
+nested (Petr)
+mnohorozměrný rozdělení, cyklický grafy nejdou klasicky (Honza)
+teoreticky podle času splines (Petr, když bude čas)
+a correlations through time and space (když málo času tak jen ten fylogenetickej příklad) favorizovat Primates, kašlat na Tools, ideálně zjednodušit skoro všechno(Petr)
+Když zbyde čas tak brutální multilevel příklad (Petr)
+
+4. den
+porovnávání modelů, WAIC, když se nestihne tak cherry blossoms (Petr)
+co dělat, když to nekonverguje (Petr)
+prior vs data (Honza)
+
+5. den
+ABC (Honza) a related
