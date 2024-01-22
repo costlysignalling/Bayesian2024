@@ -24,3 +24,17 @@ for (i in 1:1000){
 }
 hist(approxnormpoisprod)
 hist(log(approxnormpoisprod))
+
+log(150*150...)=log(150)+log(150)...
+log(150)*100
+log(sqrt(150))*100
+
+
+par(mfrow=c(1,2))
+hist(log(approxnormpoisprod))
+hist(rnorm(1000,mean = 501,sd = 1))
+
+hist((approxnormpoisprod))
+hist(exp(rnorm(1000,mean = 501,sd = 1)))
+hist((rlnorm(1000,meanlog = 501,sdlog = 1)))
+
