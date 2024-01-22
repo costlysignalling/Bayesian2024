@@ -1,0 +1,137 @@
+---
+title: "1.2 Discrete statistical distributions"
+author: "Jan Smyčka"
+date: "17/01/2024"
+output: ioslides_presentation
+---
+
+## Bernoulli distribution
+
+Tossing a coin
+
+```{r setup, echo=FALSE, warning=F, error=F, message=F}
+library(Rlab)
+set.seed(113)
+```
+
+```{r bernoulli1}
+rbern(1, p=0.5)
+```
+
+## Bernoulli distribution
+
+The coin is biased
+
+```{r bernoulli2}
+rbern(1, p=0.7)
+```
+
+## Bernoulli distribution
+
+Tossing a coin multiple times
+
+```{r bernoulli3}
+bern=rbern(100, p=0.7)
+bern
+```
+
+## Bernoulli distribution
+
+The mean expected result equals to p
+```{r bernoulli4}
+mean(bern)
+```
+
+## Bernoulli distribution
+
+The mean result equals to p
+```{r bernoulli5}
+hist(bern)
+```
+
+## Bernoulli distribution
+
+Application: Did my experimental seed germinate?
+
+## Binomial distribution
+
+I toss a coin multiple times and I am interested in the sum of results
+
+```{r binom1}
+rbinom(1, size=10, p=0.7)
+
+binom=rbinom(100, size=10, p=0.7)
+binom
+
+```
+
+## Binomial distribution
+
+The mean expected result equals to size*p
+
+```{r binom2}
+10*0.7
+mean(binom)
+```
+
+## Binomial distribution
+```{r binom3}
+hist(binom)
+```
+
+## Binomial distribution
+
+Application: I have sown 100 seeds. How many of them germinated?
+
+## Exercise 1
+
+Simulate a sample from a binomial distribution of size=20 and p=0.3 using only rbern() function.
+
+## Exercise 1
+```{r binom4}
+ex1=rbern(20, 0.3)
+sum(ex1)
+```
+
+## Poisson distribution
+I toss a coin $\infty$ times. The mean expected result is size*p. But the size is $\infty$
+
+$\infty$ * p = $\infty$ for any p>0
+
+$\infty$ * 0 = $\lambda$ , where $\lambda$>0
+
+-> lets use $\lambda$ for controlling the distribution, rather than p
+
+```{r poiss1}
+pois=rpois(100, lambda=4)
+pois
+```
+
+## Poisson distribution
+The mean expected result equals to $\lambda$ 
+```{r poiss2}
+mean(pois)
+```
+... of course that's how we defined $\lambda$ 
+
+## Poisson distribution
+```{r poiss3}
+hist(pois)
+```
+
+## Poisson distribution
+
+Application: How many pollinators visited the observed plant? The number of potential visitors is theoretically unlimited. 
+
+## Exercise 2
+Simulate 1000 samples from a distribution that is reasonably close to Poisson with $\lambda$=3, using only rbinom() function.
+
+## Exercise 2
+```{r poiss4}
+approxpois=rbinom(1000, size=3000000, p=0.000001)
+exactpois=rpois(1000, lambda = 3)
+par(mfrow=c(1,2)); hist(approxpois); hist(exactpois)
+par(mfrow=c(1,1))
+
+```
+

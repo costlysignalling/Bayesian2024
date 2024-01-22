@@ -1,0 +1,145 @@
+---
+title: "2.1 Doing it Bayesian"
+author: "Jan Smyčka"
+date: "09/01/2024"
+output: ioslides_presentation
+---
+
+## Frequentist statistics
+
+Data are probabilistic! How probable it is to get these interesting data if nothing interesting is going on?
+
+$$p\ value = P(data|null \ hypothesis)$$
+
+Improbable? Something interesting is going on!
+
+## Bayesian statistics
+
+Hypotheses are also probabilistic! How probable are different hypotheses based on data?
+
+$$P(hypothesis|data)$$
+
+(We use here probability as a measure of belief.)
+
+## A bit of algebra again
+
+Rule for joint (AND) probability is
+$$P(A \cap B) = P(A) \times P(B|A)$$
+$A$ and $B$ can be swapped arbitrarily
+$$P(A \cap B) = P(B) \times P(A|B)$$
+
+## A bit of algebra again
+and so
+$$P(B) \times P(A|B) = P(A) \times P(B|A)$$
+which we can rearrange to get
+$$P(A|B) = \frac {P(B|A) \times P(A)}{P(B)}$$
+which is **the Bayes rule**.
+
+## Conditional probability
+We can also say that
+$$P(B)=P(B|A) \times P(A)+P(B|nonA) \times P(nonA)$$
+so
+$$P(A|B) =\frac {P(B|A) \times P(A)}{P(B)}$$
+
+$$=\frac {P(B|A) \times P(A)}{P(B|A) \times P(A)+P(B|nonA) \times P(nonA)}$$
+
+## Conditional probability
+if we use sum sign
+$$P(A|B)=\frac {P(B|A) \times P(A)}{\sum_A P(B|A) \times P(A)}$$
+
+## Bayes rule in statistics
+we can replace $A$ and $B$ by model parameters $\theta$ (or $H$) and the data $x$ (or $d$) to get 
+
+$p(\theta|x) = \frac {p(\theta) \times p(x|\theta)}{p(x)}$
+
+where
+
+$p(x|\theta)$ ... likelihood
+
+$p(\theta)$ ... prior
+
+$p(\theta|x)$ ... posterior
+
+$p(x)$ ... the horrible thing
+
+## Why is p(x) horrible?
+
+$$p(x)=\sum_\theta p(\theta) \times p(x|\theta)$$
+
+$$p(x)=\int_\theta p(\theta) \times p(x|\theta) d\theta$$
+
+## The data
+
+We have five data points from poisson distribution
+
+```{r}
+x=rpois(5,20)
+x
+```
+
+We would like to know posterior distribution of $\lambda$
+
+## Analytical solution
+
+Poisson distribution posterior can be expressed as
+
+$$p(\lambda|x)=\dfrac{p(x|\lambda)*p(\lambda)}{p(x)}$$
+
+where
+
+$$p(x|\lambda)=\prod\limits_{i=1}^n \dfrac{\lambda^{x_i}e^{-\lambda}}{x_i!}; p(\lambda)=0.01\\$$
+
+
+$$p(x)=\int_\lambda (\prod\limits_{i=1}^n \dfrac{\lambda^{x_i}e^{-\lambda}}{x_i!}*0.01)  d\lambda\\ $$
+
+## Analytical solution - properties
+
+- is accurate
+ 
+- cannot be obtained for most model types
+
+
+## Numerical computation
+We can try to compute numerically
+
+The numerator can be expressed as R function
+
+```{r}
+baypo=function(l){
+  #likelihood
+  lh=function(l){
+    prod(((l^x)*exp(-l))/factorial(x))
+  }
+  #likelihood and prior
+  100000000*lh(l)*dunif(l,0,100)
+  }
+```
+
+
+## Numerical computation
+
+Now we can generate a grid (or whatever else) and feed the function
+```{r}
+lambda=seq(0,100,0.01)
+postdist=NULL
+for (i in 1:length(lambda)){
+  postdist[i]=baypo(lambda[i])
+  }
+prob=postdist/sum(postdist)
+
+```
+
+## Numerical computation
+
+```{r}
+plot(prob~lambda, type="l")
+
+```
+
+## Numerical computation - properties
+
+ - is terribly slow and wasteful
+
+ - theoretically works always
+ 
+ - can be paralelized on clusters
