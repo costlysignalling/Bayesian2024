@@ -23,6 +23,7 @@ load("crdata2.RData")
 
 cor(r2[,1],r2[,2])
 plot(r2[,1]~r2[,2])
+par(mfrow=c(1,2))
 plot(r2[,1]~climate)
 plot(r2[,2]~climate)
 
@@ -44,7 +45,7 @@ mvmodel2<-alist(
 )
 
 mvposterior2=ulam(mvmodel2,
-                     data=list(r1=r[,1],r2=r[,2], climate=climate))
+                     data=list(r1=r2[,1],r2=r2[,2], climate=climate))
 
 precis(mvposterior2,depth = 3)
 traceplot(mvposterior2)
@@ -52,7 +53,43 @@ traceplot(mvposterior2)
 # Example 2 Simulate data with response between 0 and 1 and analyze them
 
 # Example 3 Simulate data where the strength of correlation is changing with climate
+climate=seq(0.303,0.600,0.003)
 
-# Example 4 Tweak the cyclical model so that it works
+curve(logistic(x),-10,10)
+curve(logit(x),0,1)
 
-# Example 5 Test which unlinked parameters od model 2 really pay off
+concentr=8
+a=0.5
+b=-1
+mean=logistic(a+b*climate)
+mean=(mean*2)-1
+
+sigma=c(1,2)
+
+rholist=list()
+for (i in 1:100){
+  rholist[[i]]=diag(2)*1
+  rholist[[i]][1,2]=mean[i]
+  rholist[[i]][2,1]=mean[i]
+
+}
+
+cor2cov_1 <- function(R){
+  diag(sigma) %*% R %*% diag(sigma)
+}
+
+sigmalist=lapply(rholist, cor2cov_1)
+
+mu1=10+5*climate
+mu2=20+2*climate
+r3=matrix(0,100,2)
+
+for (i in 1:100){
+  r3[i,]=rmvnorm(1,c(mu1[i],mu2[i]), sigmalist[[i]])
+}
+r3
+plot(r3[,1],r3[,2])
+
+# Example 4 Tweak the cyclical model so that it works DONE:-)
+
+# Example 5 Test which unlinked parameters of model 2 really pay off
