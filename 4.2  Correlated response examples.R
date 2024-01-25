@@ -54,3 +54,5 @@ traceplot(mvposterior2)
 # Example 3 Simulate data where the strength of correlation is changing with climate
 
 # Example 4 Tweak the cyclical model so that it works
+
+# Example 5 Test which unlinked parameters od model 2 really pay off

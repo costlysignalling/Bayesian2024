@@ -81,10 +81,49 @@ m2 <- quap(
     a ~ dnorm( 0.5 , 1 ),
     c(b1,b2) ~ dnorm( 0 , 10 ),
     log_sigma ~ dnorm( 0 , 1 )
-  ), data=d , start=list(b=rep(0,2)) )
+  ), data=d  )
 
 #TASK 11: Create polynomial models of order 3 and 4, Visualize the outcomes of the linear and the most complex (fourth order polynomial) model
 #If you struggle, you can find the solution in TASK_SOLUTIONS.R line 195
+# Polynomials of order 3 and 4
+m3 <- quap(
+  alist(
+    brain_std ~ dnorm( mu , exp(log_sigma) ),
+    mu <- a + b[1]*mass_std + b[2]*mass_std^2 + b[3]*mass_std^3,
+    a ~ dnorm( 0.5 , 1 ),
+    b ~ dnorm( 0 , 10 ),
+    log_sigma ~ dnorm( 0 , 1 )
+  ), data=d , start=list(b=rep(0,3)) )
+
+m4 <- quap(
+  alist(
+    brain_std ~ dnorm( mu , exp(log_sigma) ),
+    mu <- a + b[1]*mass_std + b[2]*mass_std^2 + b[3]*mass_std^3 + b[4]*mass_std^4,
+    a ~ dnorm( 0.5 , 1 ),
+    b ~ dnorm( 0 , 10 ),
+    log_sigma ~ dnorm( 0 , 1 )
+  ), data=d , start=list(b=rep(0,4)) )
+
+# Visualize the outcomes of the linear and the most complex (fourth order polynomial) model
+l <- link( m1 , data=list( mass_std=mass_seq ) )
+mu <- apply( l , 2 , mean )
+ci <- apply( l , 2 , PI )
+plot( brain_std ~ mass_std , data=d )
+lines( mass_seq , mu )
+shade( ci , mass_seq )
+for(i in 1:10){
+  lines( mass_seq , l[i,] ,col=4)
+}
+
+l <- link( m4 , data=list( mass_std=mass_seq ) )
+mu <- apply( l , 2 , mean )
+ci <- apply( l , 2 , PI )
+plot( brain_std ~ mass_std , data=d )
+lines( mass_seq , mu )
+shade( ci , mass_seq )
+for(i in 1:10){
+  lines( mass_seq , l[i,] ,col=4)
+}
 
 #Do you think the more complex model is better?
 R2_is_bad(m0)
@@ -116,6 +155,7 @@ N<-7 #How many observations do we have
 
 #TASK 12: Calculate likelihood of 2nd observation in 10th sample in m1 posterior
 #If you struggle, you can find the solution in TASK_SOLUTIONS.R line 236
+dnorm(d$brain_std[2],post$a[10]+post$b[10]*d$mass_std[2],exp(post$log_sigma[10]))
 
 #Calculate likelihood of each observation in each sample
 lik<-matrix(NA,nrow=S,ncol=N)
@@ -155,6 +195,16 @@ sum(log.lik.var)
 #HINT: easy but not very fast way to obtain log-likelihood matrix from a model is running function sim() with log_lik parameter set to TRUE like this:
 log_lik<-sim(m1,ll=T, n=10000)
 #If you struggle, you can find the solution in TASK_SOLUTIONS.R line 242
+lpv<-function(m,n=10000){
+  log_lik<-sim(m,ll=T, n=10000)
+  
+  log.lik.var<-sapply(1:N,function(i){var2(log_lik[,i])})
+  return(log.lik.var)
+}
+
+set.seed(15)
+sumlpv<-sapply(list(m0,m1,m2,m3,m4),function(m){sum(lpv(m))})
+sumlpv
 
 #The best path between Skylla and Charybdis is marked by the sweet spot between low predictive density and high likelihood variance
 #I want to be as close to the "best model" as possible, so I aim for low numbers (therefore i subtract predictive density from likelihood variance)
