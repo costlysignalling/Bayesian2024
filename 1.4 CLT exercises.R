@@ -25,7 +25,7 @@ for (i in 1:1000){
 hist(approxnormpoisprod)
 hist(log(approxnormpoisprod))
 
-log(150*150...)=log(150)+log(150)...
+#log(150*150...)=log(150)+log(150)...
 log(150)*100
 log(sqrt(150))*100
 

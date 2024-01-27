@@ -7,11 +7,23 @@ output: ioslides_presentation
 
 ## Frequentist statistics
 
-Data are probabilistic! How probable it is to get these interesting data if nothing interesting is going on?
+Data are probabilistic! 
+
+How probable it is to get these interesting data if nothing interesting is going on?
 
 $$p\ value = P(data|null \ hypothesis)$$
 
 Improbable? Something interesting is going on!
+
+## Frequentist statistics
+
+Data are probabilistic! 
+
+How probable are the data given hypothesis x? How likely is the hypothesis x given the data?
+
+$$L(hypothesis \ x|data) = P(data|hypothesis\ x)$$
+
+Lets find the most likely hypothesis based on the data!
 
 ## Bayesian statistics
 

@@ -1,7 +1,7 @@
 ---
-title: "9 Approximate Bayesian Computation"
+title: "5.1 Approximate Bayesian Computation"
 author: "Jan Smyčka"
-date: "08/01/2023"
+date: "18/01/2024"
 output: html_document
 ---
 
@@ -22,7 +22,7 @@ $p(x)$ ... ~~the horrible thing~~
 
 The MCMC samplers are great for avoiding horrible things. However, to use them, one still needs to have the likelihood function. Sometimes we may find ourselves in the situation when we cannot express $p(x|\theta)$, but we can still simulate expected values of x using values of $\theta$. 
 
-The Approximate Bayesian Population is based on the idea that we simulate x values using some prior distribution of $\theta$ and use a meaningful summary statistic s() to transform x. Then we select simulation runs where s($x_obs$)-s($x_sim$) < tol. It is possible to prove that if we decrease tol -> 0, the $\theta$ values of selected simulation runs converge to the posterior. 
+The Approximate Bayesian Population is based on the idea that we simulate x values using some prior distribution of $\theta$ and use a meaningful summary statistic s() to transform x. Then we select simulation runs where s($x_{obs}$)-s($x_{sim}$) < tol. It is possible to prove that if we decrease tol -> 0, the $\theta$ values of selected simulation runs converge to the posterior. 
 
 
 # Simple example with normal distribution
@@ -97,7 +97,7 @@ OK, so far we could easily express the likelihood and use ulam for much more eff
 ```{r}
 library(untb)
 set.seed(13)
-target <- untb(start=rep(1,10),prob=0.3, gens=50,keep=TRUE)
+target <- untb(start=rep(1,100),prob=0.8, gens=50,keep=TRUE)
 target[1:10,]
 ```
 
@@ -120,7 +120,7 @@ And use it for generating diversity curve using untb simulator.
 
 ```{r}
 untb.streamlinedcurve=function(p){
-  a=untb(start=rep(1,10),prob=p, gens=50,keep=TRUE)
+  a=untb(start=rep(1,100),prob=p, gens=50,keep=TRUE)
   return(species.count(a))
 }
 
@@ -140,7 +140,7 @@ We can compare the selected posterior p to the prior.
 ```{r}
 hist(untbprior, seq(0,1,0.01), main="",xlab="p")
 hist(untbpostercurve$unadj.values, seq(0,1,0.01), col="red", add=T)
-abline(v=0.3,lwd=3, lty=2)
+abline(v=0.8,lwd=3, lty=2)
 ```
 
 And we can also visualize the diversity curves that were selected as closest to the target.
@@ -148,9 +148,13 @@ And we can also visualize the diversity curves that were selected as closest to 
 ```{r}
 library(scales)
 plot(1:length(target.curve),target.curve, type="l",lwd=3, xlab="t", ylab="richness")
+for (i in 1:length(untbsummarystatscurve[,1])){
+  lines(1:length(target.curve),untbsummarystatscurve[i,], type="l",col=alpha("blue",0.01))
+}
 for (i in 1:length(untbpostercurve$ss[,1])){
   lines(1:length(target.curve),untbpostercurve$ss[i,], type="l",col=alpha("black",0.01))
 }
+
 ```
 
 
@@ -160,24 +164,21 @@ So far we were using the whole diversity curve as a summary statistic. What if w
 
 ```{r}
 
-target.fin=target.curve[1]
-untbsummarystatsfin=untbsummarystatscurve[1,]
+target.fin=target.curve[length(target.curve)]
+untbsummarystatsfin=untbsummarystatscurve[,length(target.curve)]
 
 ```
 
 
 # Exercise 2
 
-And what about using not the diversity curves, but the full abundance data?
+And what about diversity in generation 3 of the simulation?
 
 ```{r}
-targetvec=as.vector(target)
-targetvec
 
-untb.streamlined=function(p){
-  a=untb(start=rep(1,10),prob=p, gens=50,keep=TRUE)
-  return(as.vector(a))
-}
+target.fin=target.curve[3]
+untbsummarystatsfin=untbsummarystatscurve[,3]
+
 ```
 
 # Exercise 3 

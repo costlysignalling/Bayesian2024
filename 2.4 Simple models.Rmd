@@ -120,10 +120,6 @@ heightboysvar=rnorm(10, 160, 5)
 
 What happens if we put restrictive priors, e.g. dunif(150,200) for both boys and girls?
 
-## Exercise 3
-
-Generate a dataset where girl and boy heights are drawn from different distribution, yet their posterior difference overlaps 0. What does it mean?
-
 # Linear regression
 
 The classical univariate linear regression model is formulated so that the expected value of response variable y is a linear function of predictor variable x. With stochastic component included it means that the observed values of y are a linear function of x with some normally distributed jitter added around. Distributivity of normal distribution also means that we can say y is drawn from normal distributions whose means are defined as a linear function of x. Typically we are interested in estimating the value of parameter $\beta$ from the linear function, when it is away from 0, it means that x values influence values of y. 
@@ -189,11 +185,11 @@ lines(datareg$x , yexpmeanregression)
 shade(yexpPIregression , datareg$x)
 ```
 
-## Exercise 4
+## Exercise 3
 
 Analyze and interpret the t-test data using the linear regression model. What is the relationship between muboys, mugirls, gbdiff, alpha and beta?
 
-## Exercise 5
+## Exercise 4
 
 Make heteroskedastic regression, i.e. morel taking in account that variance is dependent on the predictor. Here are the data.
 
@@ -206,7 +202,7 @@ datareghet$y=rnorm(21,alpha+beta*datareghet$x,sigma*datareghet$x)
 plot(datareghet$y~datareghet$x)
 ```
 
-## Exercise 6 
+## Exercise 5
 Make regression with two predictors. Here are the data.
 
 ```{r regres7}
@@ -222,7 +218,7 @@ plot(dataregbipred$y~dataregbipred$x2)
 ```
 
 
-## Exercise 7
+## Exercise 6
 Make regression with two response variables. Here are the data. What is the difference against analyzing both response variables separately? How could we solve it if the stochastic components of y1 and y2 were not independent?
 
 ```{r regres8}
