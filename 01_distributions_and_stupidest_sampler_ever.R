@@ -261,7 +261,7 @@ plot(temp, profit) #Pretty nice relationship, right?
 #Shamans: dependent: number of religious specialists, independent: group size
 #IQ in the guts: dependent: IQ, independent: microbiome (three different types)
 #Beer and science: dependent: number of publications per year, independent: yearly beer consumption (liters)
-#Generosity: dependent: sustenance donated to a food bank (each participant receives 8 kg of dry rice at the beginning of the experiment) dependent: gender (introduce as many as you like) 
+#Generosity: dependent: sustenance donated to a food bank (each participant receives 8 kg of dry rice at the beginning of the experiment) independent: gender (introduce as many as you like) 
 
 #Medium
 #Butterflies: dependent: UV reflectance (as the proportion of wing that reflects UV), independent:  latitude and elevation.
